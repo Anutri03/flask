@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Brain Tumor Detection</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #00154f;
+        --secondary: #4a6baf;
+        --accent: #ff6b6b;
+        --background: #cff5f0;
+        --text: #00154f;
+        --light: #f8f9fa;
+        --dark: #343a40;
+        --success: #28a745;
+        --warning: #ffc107;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      /* Navbar */
+      .navbar {
+        background-color: rgba(255, 255, 255, 0.95);
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px 0;
+        position: fixed;
+        top: 0;
+        width: 100%;
+        z-index: 100;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        padding: 10px 0;
+        background-color: rgba(255, 255, 255, 0.98);
+      }
+
+      .navbar-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--primary);
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .logo i {
+        color: var(--accent);
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+      }
+
+      /* Add new styles for dropdown */
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 1000;
+        top: 100%;
+        left: 0;
+        padding: 10px 0;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .dropdown-content::before {
+        content: "";
+        position: absolute;
+        top: -8px;
+        left: 20px;
+        width: 16px;
+        height: 16px;
+        background-color: white;
+        transform: rotate(45deg);
+        box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .dropdown-content a {
+        color: var(--primary);
+        padding: 12px 20px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .dropdown-content a:hover {
+        background-color: var(--light);
+        color: var(--accent);
+      }
+
+      .dropdown-content i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .nav-links a {
+        color: var(--primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s;
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* Add styles for predict button */
+      .predict-btn {
+        background-color: var(--accent);
+        color: white !important;
+        padding: 8px 20px;
+        border-radius: 25px;
+        margin-left: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .predict-btn:hover {
+        background-color: #ff5252;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+      }
+
+      .predict-btn i {
+        margin-right: 5px;
+      }
+
+      .nav-links a::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background-color: var(--accent);
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Hero Section */
+      .hero {
+        padding: 180px 0 100px;
+        background: linear-gradient(135deg, var(--background) 0%, #ffffff 100%);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .hero::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")
+          center/cover;
+        opacity: 0.1;
+        z-index: 1;
+      }
+
+      .hero-content {
+        max-width: 600px;
+        position: relative;
+        z-index: 2;
+      }
+
+      .hero h1 {
+        font-size: 4.5rem;
+        line-height: 1.1;
+        color: var(--primary);
+        margin-bottom: 20px;
+        font-weight: 900;
+        animation: fadeInUp 1s ease;
+      }
+
+      .hero p {
+        font-size: 1.3rem;
+        margin-bottom: 30px;
+        color: var(--text);
+        animation: fadeInUp 1s ease 0.2s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      .cta-button {
+        display: inline-block;
+        padding: 15px 40px;
+        background-color: var(--accent);
+        color: white;
+        text-decoration: none;
+        border-radius: 30px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        animation: fadeInUp 1s ease 0.4s;
+        opacity: 0;
+        animation-fill-mode: forwards;
+      }
+
+      .cta-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+      }
+
+      /* Results Section */
+      .results-section {
+        background-color: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        margin: 60px auto;
+        max-width: 800px;
+        transition: transform 0.3s ease;
+      }
+
+      .results-section:hover {
+        transform: translateY(-5px);
+      }
+
+      h2 {
+        color: var(--primary);
+        margin-bottom: 30px;
+        font-weight: 700;
+        font-size: 2.5rem;
+        text-align: center;
+      }
+
+      .loading {
+        text-align: center;
+        padding: 60px;
+        display: none;
+      }
+
+      .spinner {
+        border: 5px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 5px solid var(--secondary);
+        width: 60px;
+        height: 60px;
+        margin: 0 auto 20px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .result-visualization {
+        background-color: var(--light);
+        border-radius: 15px;
+        padding: 30px;
+        margin-top: 30px;
+        position: relative;
+        overflow: hidden;
+        height: 400px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .result-img {
+        max-width: 100%;
+        max-height: 350px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+      }
+
+      .result-img:hover {
+        transform: scale(1.05);
+      }
+
+      .detection-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .tumor-highlight {
+        position: absolute;
+        border: 3px solid var(--accent);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
+        }
+      }
+
+      .result-card {
+        border-left: 4px solid var(--secondary);
+        background-color: var(--light);
+        padding: 25px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+      }
+
+      .result-card:hover {
+        transform: translateX(10px);
+      }
+
+      .result-card h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .probability-bar {
+        height: 10px;
+        background-color: #e9ecef;
+        border-radius: 5px;
+        margin: 15px 0;
+        overflow: hidden;
+      }
+
+      .probability-fill {
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          var(--success),
+          var(--warning),
+          var(--accent)
+        );
+        width: 0;
+        transition: width 1.5s ease-in-out;
+      }
+
+      /* Features Section */
+      .features {
+        padding: 100px 0;
+        background-color: white;
+        position: relative;
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 60px;
+        color: var(--primary);
+        font-size: 2.8rem;
+        font-weight: 800;
+        position: relative;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 4px;
+        background-color: var(--accent);
+        border-radius: 2px;
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 40px;
+      }
+
+      .feature-card {
+        background-color: var(--light);
+        border-radius: 20px;
+        padding: 40px 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .feature-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          rgba(255, 107, 107, 0.1),
+          rgba(74, 107, 175, 0.1)
+        );
+        opacity: 0;
+        transition: opacity 0.3s ease;
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .feature-card:hover::before {
+        opacity: 1;
+      }
+
+      .feature-icon {
+        font-size: 50px;
+        margin-bottom: 25px;
+        color: var(--primary);
+        transition: transform 0.3s ease;
+      }
+
+      .feature-card:hover .feature-icon {
+        transform: scale(1.1);
+      }
+
+      .feature-card h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        font-size: 1.4rem;
+        font-weight: 600;
+      }
+
+      /* Footer */
+      footer {
+        background-color: var(--primary);
+        color: white;
+        padding: 80px 0 30px;
+        position: relative;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 40px;
+        margin-bottom: 50px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.4rem;
+        margin-bottom: 25px;
+        color: white;
+        position: relative;
+        padding-bottom: 15px;
+      }
+
+      .footer-column h3::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 50px;
+        height: 2px;
+        background-color: var(--accent);
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 12px;
+      }
+
+      .footer-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .footer-links a:hover {
+        color: var(--accent);
+        transform: translateX(5px);
+      }
+
+      .footer-bottom {
+        text-align: center;
+        padding-top: 30px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.6);
+        font-size: 0.9rem;
+      }
+
+      /* Animations */
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 3rem;
+        }
+
+        .hero p {
+          font-size: 1.1rem;
+        }
+
+        .results-section {
+          padding: 20px;
+          margin: 30px 20px;
+        }
+
+        .result-visualization {
+          height: 300px;
+        }
+
+        .features-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="container navbar-content">
+        <a href="#" class="logo">
+          <i class="fas fa-brain"></i>
+          BrainScan AI
+        </a>
+        <ul class="nav-links">
+          <li>
+            <a href="#home"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li class="dropdown">
+            <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
+            <div class="dropdown-content">
+              <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
+              <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
+              <a href="#visualization"
+                ><i class="fas fa-image"></i> Visualization</a
+              >
+              <a href="#report"
+                ><i class="fas fa-file-medical"></i> Generate Report</a
+              >
+            </div>
+          </li>
+          <li>
+            <a href="#technology"
+              ><i class="fas fa-microchip"></i> Technology</a
+            >
+          </li>
+          <li>
+            <a href="#research"><i class="fas fa-flask"></i> Research</a>
+          </li>
+          <li>
+            <a href="#about"><i class="fas fa-info-circle"></i> About</a>
+          </li>
+          <li>
+            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+          </li>
+          <li>
+            <a href="#predict" class="predict-btn"
+              ><i class="fas fa-robot"></i> Predict</a
+            >
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <div class="container">
+        <div class="hero-content">
+          <h1>Early Detection Saves Lives</h1>
+          <p>
+            AI-powered brain tumor detection with 95% accuracy. Get instant
+            results from your MRI scans using cutting-edge deep learning
+            technology.
+          </p>
+          <a href="#contact" class="cta-button">Get Started</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Results Section -->
+    <div class="container">
+      <div class="results-section">
+        <h2>Detection Results</h2>
+
+        <div class="loading" id="loading">
+          <div class="spinner"></div>
+          <p>Analyzing brain MRI scan...</p>
+          <p>This may take a few moments</p>
+        </div>
+
+        <div class="result-container" id="no-result">
+          <p>MRI analysis results will appear here</p>
+        </div>
+
+        <div class="result-container" id="result-content" style="display: none">
+          <div class="result-visualization">
+            <img src="" id="result-img" class="result-img" alt="Analyzed MRI" />
+            <div class="detection-overlay" id="detection-overlay"></div>
+          </div>
+
+          <div class="result-details">
+            <div class="result-card">
+              <h3><i class="fas fa-chart-line"></i> Detection Probability</h3>
+              <div class="probability-bar">
+                <div class="probability-fill" id="probability-fill"></div>
+              </div>
+              <p>
+                <span id="probability-value">0</span>% likelihood of tumor
+                presence
+              </p>
+            </div>
+
+            <div class="result-card">
+              <h3><i class="fas fa-map-marker-alt"></i> Region of Interest</h3>
+              <p>Location: <span id="tumor-location">N/A</span></p>
+              <p>Size: <span id="tumor-size">N/A</span></p>
+            </div>
+
+            <div class="result-card">
+              <h3><i class="fas fa-clipboard-list"></i> Analysis Notes</h3>
+              <p id="analysis-notes">No analysis available yet.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features Section -->
+    <section class="features" id="technology">
+      <div class="container">
+        <h2 class="section-title">Why Choose Our Technology</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Fast Results</h3>
+            <p>
+              Get detailed analysis in seconds, not days, allowing for quicker
+              medical decisions.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📊</div>
+            <h3>95% Accuracy</h3>
+            <p>
+              Our AI model has been trained on thousands of MRI scans with
+              validated clinical outcomes.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔍</div>
+            <h3>Precision Detection</h3>
+            <p>
+              Advanced algorithms can identify tumors as small as 2mm in
+              diameter.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🏥</div>
+            <h3>Clinical Integration</h3>
+            <p>
+              Seamlessly integrate with existing hospital and clinical
+              information systems.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-column">
+            <h3>BrainScan AI</h3>
+            <p>
+              Pioneering the future of medical imaging with artificial
+              intelligence to improve patient outcomes worldwide.
+            </p>
+          </div>
+          <div class="footer-column">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+              <li><a href="#home">Home</a></li>
+              <li><a href="#technology">Try Demo</a></li>
+              <li><a href="#research">Our Technology</a></li>
+              <li><a href="#about">Research Papers</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Resources</h3>
+            <ul class="footer-links">
+              <li><a href="#documentation">Documentation</a></li>
+              <li><a href="#api">API Reference</a></li>
+              <li><a href="#studies">Clinical Studies</a></li>
+              <li><a href="#cases">Case Studies</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h3>Contact Us</h3>
+            <ul class="footer-links">
+              <li><a href="#support">Support</a></li>
+              <li><a href="#sales">Sales</a></li>
+              <li><a href="#partnerships">Partnerships</a></li>
+              <li><a href="#media">Media Inquiries</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>
+            © 2024 BrainScan AI. All rights reserved. This is a demonstration
+            application for educational purposes only.
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Navbar scroll effect
+      window.addEventListener("scroll", function () {
+        const navbar = document.querySelector(".navbar");
+        if (window.scrollY > 50) {
+          navbar.classList.add("scrolled");
+        } else {
+          navbar.classList.remove("scrolled");
+        }
+      });
+
+      // Simplified JavaScript for demo
+      const loading = document.getElementById("loading");
+      const noResult = document.getElementById("no-result");
+      const resultContent = document.getElementById("result-content");
+      const resultImg = document.getElementById("result-img");
+      const detectionOverlay = document.getElementById("detection-overlay");
+      const probabilityFill = document.getElementById("probability-fill");
+      const probabilityValue = document.getElementById("probability-value");
+      const tumorLocation = document.getElementById("tumor-location");
+      const tumorSize = document.getElementById("tumor-size");
+      const analysisNotes = document.getElementById("analysis-notes");
+
+      // Demo function to simulate results
+      function showDemoResults() {
+        loading.style.display = "block";
+        noResult.style.display = "none";
+        resultContent.style.display = "none";
+
+        setTimeout(() => {
+          loading.style.display = "none";
+          resultContent.style.display = "block";
+          probabilityFill.style.width = "75%";
+          probabilityValue.textContent = "75";
+          tumorLocation.textContent = "Frontal Lobe";
+          tumorSize.textContent = "2.5cm";
+          analysisNotes.textContent =
+            "Initial analysis suggests a benign tumor with clear margins. Further monitoring recommended.";
+        }, 2000);
+      }
+
+      // Add click event to CTA button
+      document
+        .querySelector(".cta-button")
+        .addEventListener("click", showDemoResults);
+    </script>
+  </body>
+</html>
