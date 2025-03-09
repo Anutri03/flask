@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technology Stack - Brain Tumor Detection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary: #00154f;
+            --secondary: #4a6baf;
+            --accent: #ff6b6b;
+            --background: #cff5f0;
+            --text: #00154f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown-content a {
+            color: var(--primary);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .predict-btn {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            margin-left: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .predict-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .predict-btn i {
+            margin-right: 5px;
+        }
+
+        .nav-links a::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Technology Section Styles */
+        .tech-section {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+
+        .tech-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+        }
+
+        .tech-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .tech-header h1 {
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .tech-header p {
+            color: var(--secondary);
+            font-size: 1.2em;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .tech-card {
+            background: var(--light);
+            border-radius: 12px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .tech-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .tech-card-image {
+            width: 100%;
+            height: 150px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            transition: transform 0.3s ease;
+            background: white;
+            padding: 20px;
+        }
+
+        .tech-card:hover .tech-card-image {
+            transform: scale(1.05);
+        }
+
+        .tech-card i {
+            font-size: 2.5em;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+
+        .tech-card h3 {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-bottom: 15px;
+        }
+
+        .tech-card p {
+            color: var(--secondary);
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            margin-top: 50px;
+        }
+
+        .tech-stack h2 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .tech-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background: var(--light);
+            border-radius: 12px;
+        }
+
+        .tech-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateX(5px);
+        }
+
+        .tech-item img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .tech-item span {
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .tech-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                BrainScan AI
+            </a>
+            <ul class="nav-links">
+                <li>
+                    <a href="{{ url_for('landingpagemain') }}"><i class="fas fa-home"></i> Home</a>
+                </li>
+                <li class="dropdown">
+                    <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
+                    <div class="dropdown-content">
+                        <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
+                        <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
+                        <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
+                        <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
+                    </div>
+                </li>
+                <li>
+                    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a>
+                </li>
+                <li>
+                    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
+                </li>
+                <li>
+                    <a href="#predict" class="predict-btn"><i class="fas fa-robot"></i> Predict</a>
+                </li>
+                <li>
+                    <a href="{{ url_for('logout') }}" class="predict-btn" style="background-color: #dc3545;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="tech-section">
+        <div class="tech-container">
+            <div class="tech-header">
+                <h1>Our Technology Stack</h1>
+                <p>Discover the cutting-edge technologies and frameworks that power our brain tumor detection system</p>
+            </div>
+
+            <div class="tech-grid">
+                <div class="tech-card">
+                    <img src="https://static.vecteezy.com/system/resources/previews/018/783/274/non_2x/deep-learning-icon-from-industry-4-0-collection-simple-line-element-deep-learning-symbol-for-templates-web-design-and-infographics-vector.jpg" alt="Deep Learning" class="tech-card-image">
+                    <h3>Deep Learning</h3>
+                    <p>Advanced neural networks and convolutional neural networks (CNNs) for accurate tumor detection and classification.</p>
+                </div>
+                <div class="tech-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/OpenCV_Logo_with_text_svg_version.svg" alt="Image Processing" class="tech-card-image">
+                    <h3>Image Processing</h3>
+                    <p>Sophisticated image processing algorithms for MRI scan analysis and enhancement.</p>
+                </div>
+                <div class="tech-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Development" class="tech-card-image">
+                    <h3>Python Development</h3>
+                    <p>Robust backend development using Python and its powerful libraries for AI and data processing.</p>
+                </div>
+                <div class="tech-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NumPy_logo_2020.svg" alt="Data Management" class="tech-card-image">
+                    <h3>Data Management</h3>
+                    <p>Efficient data storage and management systems for handling medical imaging data.</p>
+                </div>
+            </div>
+
+            <div class="tech-stack">
+                <h2>Technologies Used</h2>
+                <div class="tech-list">
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" alt="Python Logo">
+                        <span>Python 3.x</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Tensorflow_logo.svg" alt="TensorFlow Logo">
+                        <span>TensorFlow</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/32/OpenCV_Logo_with_text_svg_version.svg" alt="OpenCV Logo">
+                        <span>OpenCV</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/31/NumPy_logo_2020.svg" alt="NumPy Logo">
+                        <span>NumPy</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/ed/Pandas_logo.svg" alt="Pandas Logo">
+                        <span>Pandas</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/3/3c/Flask_logo.svg" alt="Flask Logo">
+                        <span>Flask</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/6/61/HTML5_logo_and_wordmark.svg" alt="HTML5 Logo">
+                        <span>HTML5</span>
+                    </div>
+                    <div class="tech-item">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/CSS3_logo_and_wordmark.svg" alt="CSS3 Logo">
+                        <span>CSS3</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+    </script>
+</body>
+</html> 
