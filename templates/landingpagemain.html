@@ -84,7 +84,7 @@
         gap: 30px;
       }
 
-      /* Add new styles for dropdown */
+      /* Dropdown styles */
       .dropdown {
         position: relative;
         display: inline-block;
@@ -156,7 +156,7 @@
         gap: 5px;
       }
 
-      /* Add styles for predict button */
+      /* Predict button */
       .predict-btn {
         background-color: var(--accent);
         color: white !important;
@@ -170,10 +170,6 @@
         background-color: #ff5252;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-      }
-
-      .predict-btn i {
-        margin-right: 5px;
       }
 
       .nav-links a::after {
@@ -253,281 +249,6 @@
       .cta-button:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
-      }
-
-      /* Results Section */
-      .results-section {
-        background-color: white;
-        border-radius: 20px;
-        padding: 40px;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        margin: 60px auto;
-        max-width: 800px;
-        transition: transform 0.3s ease;
-      }
-
-      .results-section:hover {
-        transform: translateY(-5px);
-      }
-
-      h2 {
-        color: var(--primary);
-        margin-bottom: 30px;
-        font-weight: 700;
-        font-size: 2.5rem;
-        text-align: center;
-      }
-
-      .loading {
-        text-align: center;
-        padding: 60px;
-        display: none;
-      }
-
-      .spinner {
-        border: 5px solid #f3f3f3;
-        border-radius: 50%;
-        border-top: 5px solid var(--secondary);
-        width: 60px;
-        height: 60px;
-        margin: 0 auto 20px;
-        animation: spin 2s linear infinite;
-      }
-
-      @keyframes spin {
-        0% {
-          transform: rotate(0deg);
-        }
-        100% {
-          transform: rotate(360deg);
-        }
-      }
-
-      .result-visualization {
-        background-color: var(--light);
-        border-radius: 15px;
-        padding: 30px;
-        margin-top: 30px;
-        position: relative;
-        overflow: hidden;
-        height: 400px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .result-img {
-        max-width: 100%;
-        max-height: 350px;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-      }
-
-      .result-img:hover {
-        transform: scale(1.05);
-      }
-
-      .detection-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .tumor-highlight {
-        position: absolute;
-        border: 3px solid var(--accent);
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
-        }
-        70% {
-          box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
-        }
-      }
-
-      .result-card {
-        border-left: 4px solid var(--secondary);
-        background-color: var(--light);
-        padding: 25px;
-        margin-bottom: 20px;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-      }
-
-      .result-card:hover {
-        transform: translateX(10px);
-      }
-
-      .result-card h3 {
-        color: var(--primary);
-        margin-bottom: 15px;
-        font-size: 1.3rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .probability-bar {
-        height: 10px;
-        background-color: #e9ecef;
-        border-radius: 5px;
-        margin: 15px 0;
-        overflow: hidden;
-      }
-
-      .probability-fill {
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          var(--success),
-          var(--warning),
-          var(--accent)
-        );
-        width: 0;
-        transition: width 1.5s ease-in-out;
-      }
-
-      .result-details {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 20px;
-        margin-top: 30px;
-      }
-
-      .result-card {
-        background-color: var(--light);
-        padding: 25px;
-        border-radius: 15px;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        transition: all 0.3s ease;
-      }
-
-      .result-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-      }
-
-      .result-card h3 {
-        color: var(--primary);
-        margin-bottom: 15px;
-        font-size: 1.2rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .result-card i {
-        color: var(--accent);
-      }
-
-      .probability-bar {
-        height: 12px;
-        background-color: #e9ecef;
-        border-radius: 6px;
-        margin: 15px 0;
-        overflow: hidden;
-      }
-
-      .probability-fill {
-        height: 100%;
-        background: linear-gradient(
-          90deg,
-          var(--success),
-          var(--warning),
-          var(--accent)
-        );
-        width: 0;
-        transition: width 1.5s ease-in-out;
-      }
-
-      .result-status {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-top: 10px;
-        font-weight: 500;
-      }
-
-      .status-icon {
-        font-size: 1.2rem;
-      }
-
-      .status-normal {
-        color: var(--success);
-      }
-
-      .status-warning {
-        color: var(--warning);
-      }
-
-      .status-danger {
-        color: var(--accent);
-      }
-
-      .result-visualization {
-        background-color: var(--light);
-        border-radius: 15px;
-        padding: 30px;
-        margin-top: 30px;
-        position: relative;
-        overflow: hidden;
-        height: 400px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.1);
-      }
-
-      .result-img {
-        max-width: 100%;
-        max-height: 350px;
-        border-radius: 10px;
-        transition: transform 0.3s ease;
-      }
-
-      .result-img:hover {
-        transform: scale(1.05);
-      }
-
-      .detection-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: 2;
-      }
-
-      .tumor-highlight {
-        position: absolute;
-        border: 3px solid var(--accent);
-        border-radius: 50%;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% {
-          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
-        }
-        70% {
-          box-shadow: 0 0 0 15px rgba(255, 107, 107, 0);
-        }
-        100% {
-          box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
-        }
       }
 
       /* Features Section */
@@ -704,15 +425,6 @@
           font-size: 1.1rem;
         }
 
-        .results-section {
-          padding: 20px;
-          margin: 30px 20px;
-        }
-
-        .result-visualization {
-          height: 300px;
-        }
-
         .features-grid {
           grid-template-columns: 1fr;
         }
@@ -720,8 +432,6 @@
     </style>
   </head>
   <body>
-    <!-- Navbar -->
-    <!-- Updated Navbar Section -->
     <!-- Navbar -->
     <nav class="navbar">
       <div class="container navbar-content">
@@ -731,37 +441,25 @@
         </a>
         <ul class="nav-links">
           <li>
-            <a href="{{ url_for('landingpagemain') }}"
-              ><i class="fas fa-home"></i> Home</a
-            >
+            <a href="{{ url_for('landingpagemain') }}"><i class="fas fa-home"></i> Home</a>
           </li>
           <li class="dropdown">
             <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
             <div class="dropdown-content">
               <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
               <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
-              <a href="#visualization"
-                ><i class="fas fa-image"></i> Visualization</a
-              >
-              <a href="#report"
-                ><i class="fas fa-file-medical"></i> Generate Report</a
-              >
+              <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
+              <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
             </div>
           </li>
           <li>
-            <a href="{{ url_for('technology') }}"
-              ><i class="fas fa-microchip"></i> Technology</a
-            >
+            <a href="{{ url_for('technology') }}"><i class="fas fa-microchip"></i> Technology</a>
           </li>
           <li>
-            <a href="{{ url_for('about') }}"
-              ><i class="fas fa-info-circle"></i> About</a
-            >
+            <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
           </li>
           <li>
-            <a href="{{ url_for('research') }}"
-              ><i class="fas fa-flask"></i> Research</a
-            >
+            <a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a>
           </li>
           <li>
             <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
@@ -772,11 +470,7 @@
             </a>
           </li>
           <li>
-            <a
-              href="{{ url_for('logout') }}"
-              class="predict-btn"
-              style="background-color: #dc3545"
-            >
+            <a href="{{ url_for('logout') }}" class="predict-btn" style="background-color: #dc3545">
               <i class="fas fa-sign-out-alt"></i> Logout
             </a>
           </li>
@@ -794,58 +488,10 @@
             results from your MRI scans using cutting-edge deep learning
             technology.
           </p>
-          <a href="#contact" class="cta-button">Get Started</a>
+          <a href="{{ url_for('predict') }}" class="cta-button">Get Started</a>
         </div>
       </div>
     </section>
-
-    <!-- Results Section -->
-    <div class="container">
-      <div class="results-section">
-        <h2>Detection Results</h2>
-
-        <div class="loading" id="loading">
-          <div class="spinner"></div>
-          <p>Analyzing brain MRI scan...</p>
-          <p>This may take a few moments</p>
-        </div>
-
-        <div class="result-container" id="no-result">
-          <p>MRI analysis results will appear here</p>
-        </div>
-
-        <div class="result-container" id="result-content" style="display: none">
-          <div class="result-visualization">
-            <img src="" id="result-img" class="result-img" alt="Analyzed MRI" />
-            <div class="detection-overlay" id="detection-overlay"></div>
-          </div>
-
-          <div class="result-details">
-            <div class="result-card">
-              <h3><i class="fas fa-chart-line"></i> Detection Probability</h3>
-              <div class="probability-bar">
-                <div class="probability-fill" id="probability-fill"></div>
-              </div>
-              <p>
-                <span id="probability-value">0</span>% likelihood of tumor
-                presence
-              </p>
-            </div>
-
-            <div class="result-card">
-              <h3><i class="fas fa-map-marker-alt"></i> Region of Interest</h3>
-              <p>Location: <span id="tumor-location">N/A</span></p>
-              <p>Size: <span id="tumor-size">N/A</span></p>
-            </div>
-
-            <div class="result-card">
-              <h3><i class="fas fa-clipboard-list"></i> Analysis Notes</h3>
-              <p id="analysis-notes">No analysis available yet.</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
 
     <!-- Features Section -->
     <section class="features" id="technology">
@@ -903,9 +549,9 @@
             <h3>Quick Links</h3>
             <ul class="footer-links">
               <li><a href="#home">Home</a></li>
-              <li><a href="#technology">Try Demo</a></li>
-              <li><a href="#research">Our Technology</a></li>
-              <li><a href="#about">Research Papers</a></li>
+              <li><a href="{{ url_for('predict') }}">Try Demo</a></li>
+              <li><a href="{{ url_for('technology') }}">Our Technology</a></li>
+              <li><a href="{{ url_for('research') }}">Research Papers</a></li>
             </ul>
           </div>
           <div class="footer-column">
@@ -945,7 +591,7 @@
         }
       });
 
-      // Simplified JavaScript for demo
+      // Get elements
       const loading = document.getElementById("loading");
       const noResult = document.getElementById("no-result");
       const resultContent = document.getElementById("result-content");
@@ -957,28 +603,81 @@
       const tumorSize = document.getElementById("tumor-size");
       const analysisNotes = document.getElementById("analysis-notes");
 
-      // Demo function to simulate results
-      function showDemoResults() {
+      // Check if we have uploaded file data
+      const uploadedFile = sessionStorage.getItem('uploadedFile');
+      const hasUploadedFile = !!uploadedFile;
+
+      // Function to analyze results
+      async function analyzeResults() {
         loading.style.display = "block";
         noResult.style.display = "none";
         resultContent.style.display = "none";
 
-        setTimeout(() => {
+        try {
+          // If we have uploaded file data, use it for analysis
+          if (hasUploadedFile) {
+            const fileData = JSON.parse(uploadedFile);
+            
+            // Simulate analysis delay
+            await new Promise(resolve => setTimeout(resolve, 2000));
+
+            // Show results
+            loading.style.display = "none";
+            resultContent.style.display = "block";
+
+            // Update UI with results
+            if (fileData.probability) {
+              probabilityFill.style.width = `${fileData.probability}%`;
+              probabilityValue.textContent = fileData.probability;
+            } else {
+              // Demo values if no specific results
+              probabilityFill.style.width = "75%";
+              probabilityValue.textContent = "75";
+            }
+
+            // Set result image if available
+            if (fileData.imageUrl) {
+              resultImg.src = fileData.imageUrl;
+            }
+
+            // Update other fields
+            tumorLocation.textContent = fileData.location || "Frontal Lobe";
+            tumorSize.textContent = fileData.size || "2.5cm";
+            analysisNotes.textContent = fileData.notes || 
+              "Initial analysis suggests a benign tumor with clear margins. Further monitoring recommended.";
+
+            // Clear the stored data after showing results
+            sessionStorage.removeItem('uploadedFile');
+          } else {
+            // If no file data, show message
+            loading.style.display = "none";
+            noResult.style.display = "block";
+            noResult.innerHTML = '<p>Please upload an MRI scan first to see analysis results.</p>';
+          }
+        } catch (error) {
+          console.error('Error analyzing results:', error);
           loading.style.display = "none";
-          resultContent.style.display = "block";
-          probabilityFill.style.width = "75%";
-          probabilityValue.textContent = "75";
-          tumorLocation.textContent = "Frontal Lobe";
-          tumorSize.textContent = "2.5cm";
-          analysisNotes.textContent =
-            "Initial analysis suggests a benign tumor with clear margins. Further monitoring recommended.";
-        }, 2000);
+          noResult.style.display = "block";
+          noResult.innerHTML = '<p>Error analyzing results. Please try again.</p>';
+        }
       }
 
       // Add click event to CTA button
-      document
-        .querySelector(".cta-button")
-        .addEventListener("click", showDemoResults);
+      document.querySelector(".cta-button").addEventListener("click", function(e) {
+        e.preventDefault();
+        if (!hasUploadedFile) {
+          // If no file uploaded, redirect to predict page
+          window.location.href = "{{ url_for('predict') }}";
+        } else {
+          // If file uploaded, show results
+          analyzeResults();
+        }
+      });
+
+      // Update CTA button text based on whether we have a file
+      if (hasUploadedFile) {
+        document.querySelector(".cta-button").textContent = "Show Analysis Results";
+      }
     </script>
   </body>
-</html>
+</html> 

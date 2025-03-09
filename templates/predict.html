@@ -630,14 +630,19 @@
                 const result = await response.json();
                 
                 if (result.success) {
-                    successMessage.querySelector('span').textContent = 'File uploaded successfully!';
+                    successMessage.querySelector('span').textContent = 'File uploaded successfully! Redirecting to analysis...';
                     successMessage.style.display = 'block';
                     errorMessage.style.display = 'none';
                     
-                    // Redirect to results page if provided
-                    if (result.redirect) {
-                        window.location.href = result.redirect;
+                    // Store the file data in sessionStorage
+                    if (result.fileData) {
+                        sessionStorage.setItem('uploadedFile', JSON.stringify(result.fileData));
                     }
+                    
+                    // Redirect to landing page after a short delay
+                    setTimeout(() => {
+                        window.location.href = "{{ url_for('landingpagemain') }}";
+                    }, 1500);
                 } else {
                     throw new Error(result.error || 'Upload failed');
                 }
