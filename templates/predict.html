@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload MRI Scan - BrainScan AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #00154f;
+            --secondary: #4a6baf;
+            --accent: #ff6b6b;
+            --background: #cff5f0;
+            --text: #00154f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            background: linear-gradient(rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.95)),
+                        url('https://img.freepik.com/free-vector/gradient-technology-background_23-2149052117.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Dropdown styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown-content a {
+            color: var(--primary);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .logout-btn {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .logout-btn::after {
+            display: none;
+        }
+
+        /* Upload Section Styles */
+        .upload-section {
+            margin-top: 120px;
+            padding: 60px 0;
+        }
+
+        .upload-container {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .upload-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .upload-header h1 {
+            color: var(--primary);
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .upload-header p {
+            color: var(--text);
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        .upload-area {
+            border: 3px dashed var(--secondary);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background-color: var(--light);
+        }
+
+        .upload-area:hover {
+            border-color: var(--accent);
+            background-color: rgba(255, 107, 107, 0.05);
+        }
+
+        .upload-area i {
+            font-size: 48px;
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .upload-area h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .upload-area p {
+            color: var(--text);
+            opacity: 0.7;
+            margin-bottom: 20px;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .upload-btn {
+            background-color: var(--accent);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .file-info {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 10px;
+            display: none;
+        }
+
+        .file-info h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .file-info p {
+            margin: 5px 0;
+            color: var(--text);
+        }
+
+        .requirements {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: var(--light);
+            border-radius: 10px;
+        }
+
+        .requirements h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .requirements ul {
+            list-style: none;
+        }
+
+        .requirements li {
+            margin-bottom: 10px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .requirements li i {
+            color: var(--success);
+        }
+
+        .sub-requirement {
+            padding-left: 20px;
+            color: var(--text);
+            opacity: 0.9;
+        }
+
+        .sub-requirement i {
+            color: var(--secondary) !important;
+            font-size: 0.9em;
+        }
+
+        /* Alert Messages */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert-error {
+            background-color: #ffe5e5;
+            color: #ff3333;
+            border: 1px solid #ffcccc;
+        }
+
+        .alert-success {
+            background-color: #e5ffe5;
+            color: #28a745;
+            border: 1px solid #ccffcc;
+        }
+
+        .alert i {
+            margin-right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .upload-container {
+                margin: 20px;
+                padding: 20px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="#" class="logo">
+                <i class="fas fa-brain"></i>
+                BrainScan AI
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('landingpagemain') }}"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
+                    <div class="dropdown-content">
+                        <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
+                        <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
+                        <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
+                        <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
+                    </div>
+                </li>
+                <li><a href="{{ url_for('technology') }}"><i class="fas fa-microchip"></i> Technology</a></li>
+                <li><a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a></li>
+                <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Upload Section -->
+    <section class="upload-section">
+        <div class="container">
+            <div class="upload-container">
+                <div class="upload-header">
+                    <h1>Upload Your MRI Scan</h1>
+                    <p>Get instant AI-powered analysis of your brain MRI scan</p>
+                </div>
+
+                <!-- Alert Messages -->
+                <div id="error-message" class="alert alert-error">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span></span>
+                </div>
+                <div id="success-message" class="alert alert-success">
+                    <i class="fas fa-check-circle"></i>
+                    <span></span>
+                </div>
+
+                <form id="upload-form" action="{{ url_for('predict') }}" method="POST" enctype="multipart/form-data">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="upload-area" onclick="document.getElementById('file-input').click()">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Drag & Drop or Click to Upload</h3>
+                        <p>Supported formats: DICOM, NIfTI, JPG, PNG, TIFF, BMP, NRRD, NIFTI.GZ, PDF</p>
+                        <input type="file" id="file-input" class="file-input" name="file" accept=".dcm,.nii,.jpg,.png,.tiff,.bmp,.nrrd,.gz,.pdf" onchange="showFileInfo(this)">
+                        <button type="submit" class="upload-btn">
+                            <i class="fas fa-upload"></i>
+                            Upload & Analyze
+                        </button>
+                    </div>
+                </form>
+
+                <div class="file-info" id="file-info">
+                    <h4>Selected File:</h4>
+                    <p id="file-name"></p>
+                    <p id="file-size"></p>
+                    <p id="file-type"></p>
+                </div>
+
+                <div class="requirements">
+                    <h3>Upload Requirements</h3>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> File must be a brain MRI scan</li>
+                        <li><i class="fas fa-check-circle"></i> Maximum file size: 100MB</li>
+                        <li><i class="fas fa-check-circle"></i> Supported formats:</li>
+                        <li class="sub-requirement"><i class="fas fa-angle-right"></i> Medical Imaging: DICOM (.dcm), NIfTI (.nii), NRRD (.nrrd), NIfTI.GZ (.nii.gz)</li>
+                        <li class="sub-requirement"><i class="fas fa-angle-right"></i> Standard Images: JPG/JPEG, PNG, TIFF, BMP</li>
+                        <li class="sub-requirement"><i class="fas fa-angle-right"></i> Documents: PDF (for medical reports)</li>
+                        <li><i class="fas fa-check-circle"></i> Image resolution: minimum 256x256 pixels</li>
+                        <li><i class="fas fa-check-circle"></i> Clear, artifact-free images recommended</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function showFileInfo(input) {
+            const fileInfo = document.getElementById('file-info');
+            const fileName = document.getElementById('file-name');
+            const fileSize = document.getElementById('file-size');
+            const fileType = document.getElementById('file-type');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                const fileSize = file.size / (1024 * 1024); // Convert to MB
+
+                // Reset messages
+                errorMessage.style.display = 'none';
+                successMessage.style.display = 'none';
+
+                // Validate file size
+                if (fileSize > 100) {
+                    errorMessage.querySelector('span').textContent = 'File size exceeds 100MB limit';
+                    errorMessage.style.display = 'block';
+                    input.value = '';
+                    return;
+                }
+
+                // Validate file type
+                const allowedTypes = [
+                    'image/jpeg', 'image/png', 'image/tiff', 'image/bmp',
+                    'application/dicom', 'application/pdf',
+                    '.dcm', '.nii', '.nrrd', '.gz'
+                ];
+                const fileType = file.type || file.name.split('.').pop().toLowerCase();
+                if (!allowedTypes.some(type => fileType.includes(type))) {
+                    errorMessage.querySelector('span').textContent = 'Unsupported file format';
+                    errorMessage.style.display = 'block';
+                    input.value = '';
+                    return;
+                }
+
+                // Show file info if validation passes
+                fileInfo.style.display = 'block';
+                fileName.textContent = `File Name: ${file.name}`;
+                fileSize.textContent = `Size: ${fileSize.toFixed(2)} MB`;
+                fileType.textContent = `Type: ${file.type || 'Unknown'}`;
+            }
+        }
+
+        // Form submission handling
+        document.getElementById('upload-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
+            const formData = new FormData(this);
+
+            try {
+                const response = await fetch(this.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error('Upload failed');
+                }
+
+                const result = await response.json();
+                
+                if (result.success) {
+                    successMessage.querySelector('span').textContent = 'File uploaded successfully!';
+                    successMessage.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    
+                    // Redirect to results page if provided
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    }
+                } else {
+                    throw new Error(result.error || 'Upload failed');
+                }
+            } catch (error) {
+                errorMessage.querySelector('span').textContent = error.message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+        });
+
+        // Drag and drop functionality
+        const uploadArea = document.querySelector('.upload-area');
+
+        uploadArea.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--accent');
+            uploadArea.style.backgroundColor = 'rgba(255, 107, 107, 0.05)';
+        });
+
+        uploadArea.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary');
+            uploadArea.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--light');
+        });
+
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.borderColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary');
+            uploadArea.style.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--light');
+            
+            const fileInput = document.getElementById('file-input');
+            fileInput.files = e.dataTransfer.files;
+            showFileInfo(fileInput);
+        });
+    </script>
+</body>
+</html> 

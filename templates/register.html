@@ -3,13 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Login Page</title>
+    <title>Register Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
+        font-family: 'Poppins', sans-serif;
       }
 
       body {
@@ -48,9 +50,10 @@
         padding: 0 20px;
       }
 
-      .login-section {
+      .register-section {
         width: 460px;
-        height: 768px;
+        height: auto;
+        min-height: 768px;
         background: #FAFAFA;
         padding: 40px;
         border-radius: 8px;
@@ -98,30 +101,13 @@
         border-radius: 8px;
         font-size: 16px;
         background: transparent;
-        padding-right: 40px;
-      }
-
-      .input-group .eye-icon {
-        position: absolute;
-        right: 12px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 22px;
-        height: 22px;
-        cursor: pointer;
-      }
-
-      .form-options {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 16px;
       }
 
       .checkbox-group {
         display: flex;
         align-items: center;
         gap: 8px;
+        margin-bottom: 16px;
       }
 
       .checkbox-group input[type="checkbox"] {
@@ -129,12 +115,6 @@
         height: 20px;
         border: 1px solid #424242;
         border-radius: 4px;
-      }
-
-      .forgot-password {
-        color: #424242;
-        text-decoration: none;
-        font-size: 14px;
       }
 
       .btn-primary {
@@ -149,88 +129,30 @@
         margin-bottom: 24px;
       }
 
-      .divider {
-        position: relative;
-        text-align: center;
-        margin-bottom: 24px;
-      }
-
-      .divider::before {
-        content: '';
-        position: absolute;
-        top: 50%;
-        left: 0;
-        right: 0;
-        height: 1px;
-        background: #E0E0E0;
-      }
-
-      .divider span {
-        background: #FAFAFA;
-        padding: 0 16px;
-        color: #212121;
-        font-size: 14px;
-        position: relative;
-        z-index: 1;
-        display: inline-block;
-      }
-
-      .btn-google {
-        width: 100%;
-        height: 48px;
-        background: #FAFAFA;
-        border: 1px solid #EEEEEE;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        color: #616161;
-        font-size: 16px;
-        cursor: pointer;
-        margin-bottom: 24px;
-      }
-
       .login-link {
         text-align: center;
         color: #212121;
         font-size: 14px;
+        text-decoration: none;
       }
 
-      .slide-section {
-        width: 380px;
-        margin-left: 48px;
-        color: #fff;
+      .alert {
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+        font-size: 14px;
       }
 
-      .slide-content h2 {
-        font-size: 48px;
-        margin-bottom: 24px;
+      .alert-error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
       }
 
-      .slide-content p {
-        font-size: 18px;
-        line-height: 1.5;
-      }
-
-      .carousel-slider {
-        display: flex;
-        gap: 8px;
-        margin-top: 48px;
-      }
-
-      .slider-dot {
-        height: 2px;
-        background: rgba(255, 255, 255, 0.4);
-      }
-
-      .slider-dot.active {
-        width: 48px;
-        background: #fff;
-      }
-
-      .slider-dot:not(.active) {
-        width: 32px;
+      .alert-success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
       }
     </style>
   </head>
@@ -238,13 +160,13 @@
     <div class="container">
       <div class="background-overlay"></div>
       <div class="content-wrapper">
-        <div class="login-section">
+        <div class="register-section">
           <div class="header">
-            <h2>Welcome back</h2>
-            <h1>Login Into Your Account</h1>
+            <h2>Welcome</h2>
+            <h1>Create Your Account</h1>
           </div>
 
-          <form class="login-form" method="POST" action="{{ url_for('login') }}">
+          <form class="register-form" method="POST" action="{{ url_for('register_post') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
             {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
@@ -253,50 +175,36 @@
                 {% endfor %}
               {% endif %}
             {% endwith %}
-            
+
+            <div class="input-group">
+              <label>Full Name</label>
+              <input type="text" name="fullname" placeholder="Enter your full name" required />
+            </div>
+
             <div class="input-group">
               <label>Email</label>
               <input type="email" name="email" placeholder="Enter your email" required />
             </div>
 
             <div class="input-group">
-              <label for="password">Password</label>
-              <input type="password" name="password" id="password" placeholder="Enter password" required>
+              <label>Password</label>
+              <input type="password" name="password" placeholder="Create password" required />
             </div>
 
-            <div class="form-options">
-              <div class="checkbox-group">
-                <input type="checkbox" id="remember" name="remember" />
-                <label for="remember">Remember me</label>
-              </div>
-              <a href="#" class="forgot-password">Forgot Password?</a>
+            <div class="input-group">
+              <label>Confirm Password</label>
+              <input type="password" name="confirm-password" placeholder="Confirm password" required />
             </div>
 
-            <button type="submit" class="btn-primary">LOGIN</button>
+            <div class="checkbox-group">
+              <input type="checkbox" id="terms" name="terms" required />
+              <label for="terms">I agree to the Terms & Conditions</label>
+            </div>
+
+            <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
           </form>
 
-          <div class="divider">
-            <span>Or</span>
-          </div>
-
-          <button class="btn-google">
-            <img src="/static/icon/google-icon.svg" alt="Google" />
-            Sign up with Google
-          </button>
-
-          <a href="{{ url_for('register') }}" class="login-link">New User? SIGN UP HERE</a>
-        </div>
-
-        <div class="slide-section">
-          <div class="slide-content">
-            <h2>Predicting the future</h2>
-            <p>Login to access</p>
-          </div>
-          <div class="carousel-slider">
-            <div class="slider-dot active"></div>
-            <div class="slider-dot"></div>
-            <div class="slider-dot"></div>
-          </div>
+          <a href="{{ url_for('home') }}" class="login-link">Already have an account? LOGIN HERE</a>
         </div>
       </div>
     </div>
