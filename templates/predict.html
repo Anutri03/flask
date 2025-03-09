@@ -369,6 +369,76 @@
                 padding: 20px;
             }
         }
+
+        /* Remove these model selection styles completely */
+        .model-selection {
+            margin-top: 20px;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+        }
+
+        .model-select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 2px solid var(--secondary);
+            border-radius: 8px;
+            background-color: white;
+            color: var(--primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .model-select:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 107, 107, 0.2);
+        }
+
+        .file-actions {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: #c82333;
+            transform: translateY(-1px);
+        }
+
+        .analyze-btn {
+            background-color: var(--success);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .analyze-btn:hover {
+            background-color: #218838;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.2);
+        }
     </style>
 </head>
 <body>
@@ -425,19 +495,26 @@
                         <h3>Drag & Drop or Click to Upload</h3>
                         <p>Supported formats: DICOM, NIfTI, JPG, PNG, TIFF, BMP, NRRD, NIFTI.GZ, PDF</p>
                         <input type="file" id="file-input" class="file-input" name="file" accept=".dcm,.nii,.jpg,.png,.tiff,.bmp,.nrrd,.gz,.pdf" onchange="showFileInfo(this)">
-                        <button type="submit" class="upload-btn">
-                            <i class="fas fa-upload"></i>
-                            Upload & Analyze
-                        </button>
+                    </div>
+
+                    <div class="file-info" id="file-info">
+                        <h4>Selected File:</h4>
+                        <p id="file-name"></p>
+                        <p id="file-size"></p>
+                        <p id="file-type"></p>
+                        
+                        <div class="file-actions">
+                            <button type="button" class="delete-btn" id="delete-file">
+                                <i class="fas fa-trash"></i>
+                                Delete File
+                            </button>
+                            <button type="submit" class="analyze-btn">
+                                <i class="fas fa-brain"></i>
+                                Upload & Analyze
+                            </button>
+                        </div>
                     </div>
                 </form>
-
-                <div class="file-info" id="file-info">
-                    <h4>Selected File:</h4>
-                    <p id="file-name"></p>
-                    <p id="file-size"></p>
-                    <p id="file-type"></p>
-                </div>
 
                 <div class="requirements">
                     <h3>Upload Requirements</h3>
@@ -464,6 +541,7 @@
             const fileType = document.getElementById('file-type');
             const errorMessage = document.getElementById('error-message');
             const successMessage = document.getElementById('success-message');
+            const deleteButton = document.getElementById('delete-file');
 
             if (input.files && input.files[0]) {
                 const file = input.files[0];
@@ -500,8 +578,34 @@
                 fileName.textContent = `File Name: ${file.name}`;
                 fileSize.textContent = `Size: ${fileSize.toFixed(2)} MB`;
                 fileType.textContent = `Type: ${file.type || 'Unknown'}`;
+
+                // Show success message for file addition
+                successMessage.querySelector('span').textContent = 'File added successfully! Click Upload & Analyze to proceed.';
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
             }
         }
+
+        // Add delete file functionality
+        document.getElementById('delete-file').addEventListener('click', function() {
+            const fileInput = document.getElementById('file-input');
+            const fileInfo = document.getElementById('file-info');
+            
+            // Clear the file input
+            fileInput.value = '';
+            
+            // Hide the file info section
+            fileInfo.style.display = 'none';
+            
+            // Show success message
+            const successMessage = document.getElementById('success-message');
+            successMessage.querySelector('span').textContent = 'File deleted successfully';
+            successMessage.style.display = 'block';
+            
+            // Hide error message if it's showing
+            const errorMessage = document.getElementById('error-message');
+            errorMessage.style.display = 'none';
+        });
 
         // Form submission handling
         document.getElementById('upload-form').addEventListener('submit', async function(e) {
