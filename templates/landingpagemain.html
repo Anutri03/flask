@@ -32,12 +32,40 @@
         background-color: var(--background);
         color: var(--text);
         line-height: 1.6;
+        background: url("https://www.transparenttextures.com/patterns/healthcare.png") repeat;
+        background-attachment: fixed;
       }
 
       .container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
+      }
+
+      /* Alert Messages */
+      .alert {
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 4px;
+        text-align: center;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+      }
+
+      .alert-error {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+      }
+
+      .alert-info {
+        background-color: #cce5ff;
+        color: #004085;
+        border: 1px solid #b8daff;
       }
 
       /* Navbar */
@@ -82,6 +110,7 @@
         display: flex;
         list-style: none;
         gap: 30px;
+        align-items: center;
       }
 
       /* Dropdown styles */
@@ -140,11 +169,6 @@
         color: var(--accent);
       }
 
-      .dropdown-content i {
-        width: 20px;
-        text-align: center;
-      }
-
       .nav-links a {
         color: var(--primary);
         text-decoration: none;
@@ -162,7 +186,6 @@
         color: white !important;
         padding: 8px 20px;
         border-radius: 25px;
-        margin-left: 10px;
         transition: all 0.3s ease;
       }
 
@@ -170,6 +193,21 @@
         background-color: #ff5252;
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+      }
+
+      /* Sign in button */
+      .signin-btn {
+        background-color: var(--primary);
+        color: white !important;
+        padding: 8px 20px;
+        border-radius: 25px;
+        transition: all 0.3s ease;
+      }
+
+      .signin-btn:hover {
+        background-color: #001f7a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 21, 79, 0.3);
       }
 
       .nav-links a::after {
@@ -183,14 +221,14 @@
         transition: width 0.3s ease;
       }
 
-      .nav-links a:hover::after {
+      .nav-links a:not(.predict-btn):not(.signin-btn):hover::after {
         width: 100%;
       }
 
       /* Hero Section */
       .hero {
         padding: 180px 0 100px;
-        background: linear-gradient(135deg, var(--background) 0%, #ffffff 100%);
+        background: linear-gradient(135deg, rgba(207, 245, 240, 0.95) 0%, rgba(255, 255, 255, 0.95) 100%);
         position: relative;
         overflow: hidden;
       }
@@ -202,8 +240,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background: url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80")
-          center/cover;
+        background: url("https://images.unsplash.com/photo-1579684385127-1ef15d508118?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80") center/cover;
         opacity: 0.1;
         z-index: 1;
       }
@@ -254,8 +291,10 @@
       /* Features Section */
       .features {
         padding: 100px 0;
-        background-color: white;
+        background-color: rgba(255, 255, 255, 0.97);
         position: relative;
+        background-image: url("https://www.transparenttextures.com/patterns/white-tiles.png");
+        background-blend-mode: overlay;
       }
 
       .section-title {
@@ -344,6 +383,8 @@
         color: white;
         padding: 80px 0 30px;
         position: relative;
+        background-image: url("https://www.transparenttextures.com/patterns/dark-dots.png");
+        background-blend-mode: soft-light;
       }
 
       .footer-content {
@@ -429,51 +470,175 @@
           grid-template-columns: 1fr;
         }
       }
+
+      /* Profile Dropdown Styles */
+      .profile-dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .profile-dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: white;
+        min-width: 200px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        z-index: 1000;
+        top: 100%;
+        right: 0;
+        padding: 10px 0;
+        margin-top: 10px;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: all 0.3s ease;
+      }
+
+      .profile-dropdown:hover .profile-dropdown-content {
+        display: block;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .profile-dropdown-content::before {
+        content: '';
+        position: absolute;
+        top: -8px;
+        right: 20px;
+        width: 16px;
+        height: 16px;
+        background-color: white;
+        transform: rotate(45deg);
+        box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .profile-dropdown-content a {
+        color: var(--primary);
+        padding: 12px 20px;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        transition: all 0.3s ease;
+      }
+
+      .profile-dropdown-content a:hover {
+        background-color: var(--light);
+        color: var(--accent);
+      }
+
+      .profile-dropdown-content i {
+        width: 20px;
+        text-align: center;
+      }
+
+      .profile-info {
+        padding: 15px 20px;
+        border-bottom: 1px solid var(--light);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .profile-info img {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .profile-info .user-details {
+        flex: 1;
+      }
+
+      .profile-info .user-name {
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .profile-info .user-email {
+        font-size: 0.9em;
+        color: var(--secondary);
+      }
     </style>
   </head>
   <body>
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <!-- Navbar -->
     <nav class="navbar">
       <div class="container navbar-content">
-        <a href="#" class="logo">
+        <a href="{{ url_for('home') }}" class="logo">
           <i class="fas fa-brain"></i>
           BrainScan AI
         </a>
         <ul class="nav-links">
-          <li>
-            <a href="{{ url_for('landingpagemain') }}"><i class="fas fa-home"></i> Home</a>
-          </li>
-          <li class="dropdown">
-            <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
-            <div class="dropdown-content">
-              <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
-              <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
-              <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
-              <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
-            </div>
-          </li>
-          <li>
-            <a href="{{ url_for('technology') }}"><i class="fas fa-microchip"></i> Technology</a>
-          </li>
-          <li>
-            <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
-          </li>
-          <li>
-            <a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a>
-          </li>
-          <li>
-            <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-          </li>
-          <li>
-            <a href="{{ url_for('predict') }}" class="predict-btn">
-              <i class="fas fa-robot"></i> Predict
-            </a>
-          </li>
-          <li>
-            <a href="{{ url_for('logout') }}" class="predict-btn" style="background-color: #dc3545">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-          </li>
+          <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+          <li><a href="{{ url_for('technology') }}"><i class="fas fa-microchip"></i> Technology</a></li>
+          <li><a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a></li>
+          <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
+          <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+          
+          {% if current_user.is_authenticated %}
+            <li class="dropdown">
+              <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
+              <div class="dropdown-content">
+                <a href="{{ url_for('predict') }}"><i class="fas fa-upload"></i> MRI Upload</a>
+                <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
+                <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
+                <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
+              </div>
+            </li>
+            <li>
+              <a href="{{ url_for('predict') }}" class="predict-btn">
+                <i class="fas fa-robot"></i> Predict
+              </a>
+            </li>
+            <li class="profile-dropdown">
+              <a href="#profile">
+                <i class="fas fa-user-circle"></i>
+                {{ current_user.fullname }}
+              </a>
+              <div class="profile-dropdown-content">
+                <div class="profile-info">
+                  <i class="fas fa-user-circle fa-2x"></i>
+                  <div class="user-details">
+                    <div class="user-name">{{ current_user.fullname }}</div>
+                    <div class="user-email">{{ current_user.email }}</div>
+                  </div>
+                </div>
+                <a href="{{ url_for('profile') }}">
+                  <i class="fas fa-user"></i> My Profile
+                </a>
+                <a href="{{ url_for('predict') }}">
+                  <i class="fas fa-history"></i> My Scans
+                </a>
+                <a href="{{ url_for('logout') }}">
+                  <i class="fas fa-sign-out-alt"></i> Logout
+                </a>
+              </div>
+            </li>
+          {% else %}
+            <li>
+              <a href="{{ url_for('signin') }}" class="predict-btn">
+                <i class="fas fa-robot"></i> Try Predict
+              </a>
+            </li>
+            <li>
+              <a href="{{ url_for('signin') }}" class="signin-btn">
+                <i class="fas fa-sign-in-alt"></i> Sign In
+              </a>
+            </li>
+          {% endif %}
         </ul>
       </div>
     </nav>
@@ -488,13 +653,17 @@
             results from your MRI scans using cutting-edge deep learning
             technology.
           </p>
-          <a href="{{ url_for('predict') }}" class="cta-button">Get Started</a>
+          {% if current_user.is_authenticated %}
+            <a href="{{ url_for('predict') }}" class="cta-button">Start Analysis</a>
+          {% else %}
+            <a href="{{ url_for('signin') }}" class="cta-button">Get Started</a>
+          {% endif %}
         </div>
       </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features" id="technology">
+    <section class="features" id="features">
       <div class="container">
         <h2 class="section-title">Why Choose Our Technology</h2>
         <div class="features-grid">
@@ -548,10 +717,16 @@
           <div class="footer-column">
             <h3>Quick Links</h3>
             <ul class="footer-links">
-              <li><a href="#home">Home</a></li>
-              <li><a href="{{ url_for('predict') }}">Try Demo</a></li>
-              <li><a href="{{ url_for('technology') }}">Our Technology</a></li>
-              <li><a href="{{ url_for('research') }}">Research Papers</a></li>
+              <li><a href="{{ url_for('home') }}">Home</a></li>
+              {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('predict') }}">Try Demo</a></li>
+                <li><a href="{{ url_for('technology') }}">Our Technology</a></li>
+                <li><a href="{{ url_for('research') }}">Research Papers</a></li>
+              {% else %}
+                <li><a href="{{ url_for('signin') }}">Sign In</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+              {% endif %}
             </ul>
           </div>
           <div class="footer-column">
@@ -591,93 +766,19 @@
         }
       });
 
-      // Get elements
-      const loading = document.getElementById("loading");
-      const noResult = document.getElementById("no-result");
-      const resultContent = document.getElementById("result-content");
-      const resultImg = document.getElementById("result-img");
-      const detectionOverlay = document.getElementById("detection-overlay");
-      const probabilityFill = document.getElementById("probability-fill");
-      const probabilityValue = document.getElementById("probability-value");
-      const tumorLocation = document.getElementById("tumor-location");
-      const tumorSize = document.getElementById("tumor-size");
-      const analysisNotes = document.getElementById("analysis-notes");
-
-      // Check if we have uploaded file data
-      const uploadedFile = sessionStorage.getItem('uploadedFile');
-      const hasUploadedFile = !!uploadedFile;
-
-      // Function to analyze results
-      async function analyzeResults() {
-        loading.style.display = "block";
-        noResult.style.display = "none";
-        resultContent.style.display = "none";
-
-        try {
-          // If we have uploaded file data, use it for analysis
-          if (hasUploadedFile) {
-            const fileData = JSON.parse(uploadedFile);
-            
-            // Simulate analysis delay
-            await new Promise(resolve => setTimeout(resolve, 2000));
-
-            // Show results
-            loading.style.display = "none";
-            resultContent.style.display = "block";
-
-            // Update UI with results
-            if (fileData.probability) {
-              probabilityFill.style.width = `${fileData.probability}%`;
-              probabilityValue.textContent = fileData.probability;
-            } else {
-              // Demo values if no specific results
-              probabilityFill.style.width = "75%";
-              probabilityValue.textContent = "75";
-            }
-
-            // Set result image if available
-            if (fileData.imageUrl) {
-              resultImg.src = fileData.imageUrl;
-            }
-
-            // Update other fields
-            tumorLocation.textContent = fileData.location || "Frontal Lobe";
-            tumorSize.textContent = fileData.size || "2.5cm";
-            analysisNotes.textContent = fileData.notes || 
-              "Initial analysis suggests a benign tumor with clear margins. Further monitoring recommended.";
-
-            // Clear the stored data after showing results
-            sessionStorage.removeItem('uploadedFile');
-          } else {
-            // If no file data, show message
-            loading.style.display = "none";
-            noResult.style.display = "block";
-            noResult.innerHTML = '<p>Please upload an MRI scan first to see analysis results.</p>';
-          }
-        } catch (error) {
-          console.error('Error analyzing results:', error);
-          loading.style.display = "none";
-          noResult.style.display = "block";
-          noResult.innerHTML = '<p>Error analyzing results. Please try again.</p>';
-        }
-      }
-
-      // Add click event to CTA button
-      document.querySelector(".cta-button").addEventListener("click", function(e) {
-        e.preventDefault();
-        if (!hasUploadedFile) {
-          // If no file uploaded, redirect to predict page
-          window.location.href = "{{ url_for('predict') }}";
-        } else {
-          // If file uploaded, show results
-          analyzeResults();
-        }
+      // Auto-hide flash messages after 5 seconds
+      document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(function() {
+          const alerts = document.querySelectorAll('.alert');
+          alerts.forEach(function(alert) {
+            alert.style.opacity = '0';
+            alert.style.transition = 'opacity 0.5s ease';
+            setTimeout(function() {
+              alert.remove();
+            }, 500);
+          });
+        }, 5000);
       });
-
-      // Update CTA button text based on whether we have a file
-      if (hasUploadedFile) {
-        document.querySelector(".cta-button").textContent = "Show Analysis Results";
-      }
     </script>
   </body>
 </html> 

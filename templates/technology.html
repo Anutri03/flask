@@ -79,8 +79,66 @@
             display: flex;
             list-style: none;
             gap: 30px;
+            align-items: center;
         }
 
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:not(.predict-btn):not(.signin-btn):hover::after {
+            width: 100%;
+        }
+
+        /* Predict button */
+        .predict-btn {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .predict-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Sign in button */
+        .signin-btn {
+            background-color: var(--primary);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .signin-btn:hover {
+            background-color: #001f7a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 21, 79, 0.3);
+        }
+
+        /* Dropdown Styles */
         .dropdown {
             position: relative;
             display: inline-block;
@@ -110,7 +168,7 @@
         }
 
         .dropdown-content::before {
-            content: "";
+            content: '';
             position: absolute;
             top: -8px;
             left: 20px;
@@ -139,51 +197,6 @@
         .dropdown-content i {
             width: 20px;
             text-align: center;
-        }
-
-        .nav-links a {
-            color: var(--primary);
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s;
-            position: relative;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .predict-btn {
-            background-color: var(--accent);
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 25px;
-            margin-left: 10px;
-            transition: all 0.3s ease;
-        }
-
-        .predict-btn:hover {
-            background-color: #ff5252;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
-        }
-
-        .predict-btn i {
-            margin-right: 5px;
-        }
-
-        .nav-links a::after {
-            content: "";
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--accent);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
         }
 
         /* Technology Section Styles */
@@ -333,45 +346,163 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            right: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown:hover .profile-dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-dropdown-content a {
+            color: var(--primary);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .profile-dropdown-content i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .profile-info {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info .user-details {
+            flex: 1;
+        }
+
+        .profile-info .user-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .profile-info .user-email {
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="container navbar-content">
-            <a href="#" class="logo">
+            <a href="{{ url_for('home') }}" class="logo">
                 <i class="fas fa-brain"></i>
                 BrainScan AI
             </a>
             <ul class="nav-links">
-                <li>
-                    <a href="{{ url_for('landingpagemain') }}"><i class="fas fa-home"></i> Home</a>
-                </li>
-                <li class="dropdown">
-                    <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
-                    <div class="dropdown-content">
-                        <a href="#mri-upload"><i class="fas fa-upload"></i> MRI Upload</a>
-                        <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
-                        <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
-                        <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
-                    </div>
-                </li>
-                <li>
-                    <a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a>
-                </li>
-                <li>
-                    <a href="#contact"><i class="fas fa-envelope"></i> Contact</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('predict') }}" class="predict-btn"><i class="fas fa-robot"></i> Predict</a>
-                </li>
-                <li>
-                    <a href="{{ url_for('logout') }}" class="predict-btn" style="background-color: #dc3545;">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </a>
-                </li>
+                <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('technology') }}" {% if request.endpoint == 'technology' %}class="active"{% endif %}><i class="fas fa-microchip"></i> Technology</a></li>
+                <li><a href="{{ url_for('research') }}" {% if request.endpoint == 'research' %}class="active"{% endif %}><i class="fas fa-flask"></i> Research</a></li>
+                <li><a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}class="active"{% endif %}><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#contact" {% if request.endpoint == 'contact' %}class="active"{% endif %}><i class="fas fa-envelope"></i> Contact</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#tools" {% if request.endpoint in ['predict', 'analysis', 'visualization', 'report'] %}class="active"{% endif %}><i class="fas fa-tools"></i> Tools</a>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('predict') }}" {% if request.endpoint == 'predict' %}class="active"{% endif %}><i class="fas fa-upload"></i> MRI Upload</a>
+                            <a href="#analysis" {% if request.endpoint == 'analysis' %}class="active"{% endif %}><i class="fas fa-chart-bar"></i> Analysis</a>
+                            <a href="#visualization" {% if request.endpoint == 'visualization' %}class="active"{% endif %}><i class="fas fa-image"></i> Visualization</a>
+                            <a href="#report" {% if request.endpoint == 'report' %}class="active"{% endif %}><i class="fas fa-file-medical"></i> Generate Report</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('predict') }}" class="predict-btn {% if request.endpoint == 'predict' %}active{% endif %}">
+                            <i class="fas fa-robot"></i> Predict
+                        </a>
+                    </li>
+                    <li class="profile-dropdown">
+                        <a href="#profile" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
+                            <i class="fas fa-user-circle"></i>
+                            {{ current_user.fullname }}
+                        </a>
+                        <div class="profile-dropdown-content">
+                            <div class="profile-info">
+                                <i class="fas fa-user-circle fa-2x"></i>
+                                <div class="user-details">
+                                    <div class="user-name">{{ current_user.fullname }}</div>
+                                    <div class="user-email">{{ current_user.email }}</div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a href="#scan-history" class="scan-history-link {% if request.endpoint == 'scan_history' %}active{% endif %}">
+                                <i class="fas fa-history"></i> My Scans
+                            </a>
+                            <a href="{{ url_for('logout') }}" {% if request.endpoint == 'logout' %}class="active"{% endif %}>
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ url_for('signin') }}" class="predict-btn {% if request.endpoint == 'signin' %}active{% endif %}">
+                            <i class="fas fa-robot"></i> Try Predict
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('signin') }}" class="signin-btn {% if request.endpoint == 'signin' %}active{% endif %}">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </a>
+                    </li>
+                {% endif %}
             </ul>
         </div>
     </nav>

@@ -53,7 +53,7 @@
       .register-section {
         width: 460px;
         height: auto;
-        min-height: 768px;
+        min-height: 500px;
         background: #FAFAFA;
         padding: 40px;
         border-radius: 8px;
@@ -76,11 +76,29 @@
         color: #000;
       }
 
+      .alert {
+        padding: 12px;
+        margin-bottom: 16px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .alert-error {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #ef9a9a;
+      }
+
+      .alert-success {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+        border: 1px solid #a5d6a7;
+      }
+
       .input-group {
         position: relative;
         margin-bottom: 16px;
         width: 100%;
-        max-width: 300px;
       }
 
       .input-group label {
@@ -103,11 +121,16 @@
         background: transparent;
       }
 
+      .input-group input:focus {
+        outline: none;
+        border-color: #1a73e8;
+      }
+
       .checkbox-group {
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 16px;
+        margin-bottom: 24px;
       }
 
       .checkbox-group input[type="checkbox"] {
@@ -120,39 +143,42 @@
       .btn-primary {
         width: 100%;
         height: 56px;
-        background: #212121;
+        background: #1a73e8;
         color: #fff;
         border: none;
         border-radius: 8px;
         font-size: 16px;
+        font-weight: 600;
         cursor: pointer;
         margin-bottom: 24px;
+        transition: background-color 0.3s ease;
+      }
+
+      .btn-primary:hover {
+        background: #1557b0;
       }
 
       .login-link {
         text-align: center;
-        color: #212121;
+        color: #424242;
         font-size: 14px;
+      }
+
+      .login-link a {
+        color: #1a73e8;
         text-decoration: none;
+        font-weight: 500;
       }
 
-      .alert {
-        padding: 12px;
-        margin-bottom: 16px;
-        border-radius: 4px;
-        font-size: 14px;
+      .login-link a:hover {
+        text-decoration: underline;
       }
 
-      .alert-error {
-        background-color: #ffebee;
-        color: #c62828;
-        border: 1px solid #ef9a9a;
-      }
-
-      .alert-success {
-        background-color: #e8f5e9;
-        color: #2e7d32;
-        border: 1px solid #a5d6a7;
+      @media (max-width: 768px) {
+        .register-section {
+          width: 100%;
+          max-width: 460px;
+        }
       }
     </style>
   </head>
@@ -166,34 +192,61 @@
             <h1>Create Your Account</h1>
           </div>
 
-          <form class="register-form" method="POST" action="{{ url_for('register_post') }}">
+          {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+          <form class="register-form" method="POST" action="{{ url_for('register') }}">
             <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
-            {% with messages = get_flashed_messages(with_categories=true) %}
-              {% if messages %}
-                {% for category, message in messages %}
-                  <div class="alert alert-{{ category }}">{{ message }}</div>
-                {% endfor %}
-              {% endif %}
-            {% endwith %}
 
             <div class="input-group">
-              <label>Full Name</label>
-              <input type="text" name="fullname" placeholder="Enter your full name" required />
+              <label for="fullname">Full Name</label>
+              <input 
+                type="text" 
+                id="fullname" 
+                name="fullname" 
+                placeholder="Enter your full name"
+                required 
+              />
             </div>
 
             <div class="input-group">
-              <label>Email</label>
-              <input type="email" name="email" placeholder="Enter your email" required />
+              <label for="email">Email</label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                placeholder="Enter your email"
+                required 
+              />
             </div>
 
             <div class="input-group">
-              <label>Password</label>
-              <input type="password" name="password" placeholder="Create password" required />
+              <label for="password">Password</label>
+              <input 
+                type="password" 
+                id="password" 
+                name="password" 
+                placeholder="Create password"
+                required 
+                minlength="8"
+              />
             </div>
 
             <div class="input-group">
-              <label>Confirm Password</label>
-              <input type="password" name="confirm-password" placeholder="Confirm password" required />
+              <label for="confirm-password">Confirm Password</label>
+              <input 
+                type="password" 
+                id="confirm-password" 
+                name="confirm-password" 
+                placeholder="Confirm password"
+                required 
+                minlength="8"
+              />
             </div>
 
             <div class="checkbox-group">
@@ -204,7 +257,9 @@
             <button type="submit" class="btn-primary">CREATE ACCOUNT</button>
           </form>
 
-          <a href="{{ url_for('home') }}" class="login-link">Already have an account? LOGIN HERE</a>
+          <div class="login-link">
+            Already have an account? <a href="{{ url_for('signin') }}">Login here</a>
+          </div>
         </div>
       </div>
     </div>

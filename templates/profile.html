@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - BrainScan AI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <style>
+        :root {
+            --primary: #00154f;
+            --secondary: #4a6baf;
+            --accent: #ff6b6b;
+            --background: #cff5f0;
+            --text: #00154f;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --success: #28a745;
+            --warning: #ffc107;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Navigation Styles */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98);
+        }
+
+        .navbar-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:not(.predict-btn):not(.signin-btn):hover::after {
+            width: 100%;
+        }
+
+        /* Active state for nav links */
+        .nav-links a.active {
+            color: var(--accent);
+        }
+
+        .nav-links a.active::after {
+            width: 100%;
+            background-color: var(--accent);
+        }
+
+        /* Predict button */
+        .predict-btn {
+            background-color: var(--accent);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .predict-btn:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        /* Sign in button */
+        .signin-btn {
+            background-color: var(--primary);
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .signin-btn:hover {
+            background-color: #001f7a;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 21, 79, 0.3);
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            left: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .dropdown-content a {
+            color: var(--primary);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .dropdown-content i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Active state for dropdown items */
+        .dropdown-content a.active {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        /* Profile Dropdown Styles */
+        .profile-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .profile-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            z-index: 1000;
+            top: 100%;
+            right: 0;
+            padding: 10px 0;
+            margin-top: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown:hover .profile-dropdown-content {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .profile-dropdown-content::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            right: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: white;
+            transform: rotate(45deg);
+            box-shadow: -2px -2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .profile-dropdown-content a {
+            color: var(--primary);
+            padding: 12px 20px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-dropdown-content a:hover {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .profile-dropdown-content i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Active state for profile dropdown items */
+        .profile-dropdown-content a.active {
+            background-color: var(--light);
+            color: var(--accent);
+        }
+
+        .profile-info {
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .profile-info img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .profile-info .user-details {
+            flex: 1;
+        }
+
+        .profile-info .user-name {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .profile-info .user-email {
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .navbar {
+                padding: 1rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Profile Page Styles */
+        .profile-section {
+            max-width: 1200px;
+            margin: 120px auto 50px;
+            padding: 20px;
+        }
+
+        .profile-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 5px solid white;
+            margin-bottom: 20px;
+            background-color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+        }
+
+        .profile-avatar i {
+            font-size: 80px;
+            color: var(--primary);
+        }
+
+        .profile-name {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .profile-email {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .profile-content {
+            padding: 40px;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+        }
+
+        .profile-sidebar {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        .profile-menu {
+            list-style: none;
+        }
+
+        .profile-menu li {
+            margin-bottom: 10px;
+        }
+
+        .profile-menu a {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .profile-menu a:hover,
+        .profile-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .profile-menu i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .profile-main {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 30px;
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .info-group {
+            margin-bottom: 25px;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: var(--secondary);
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            color: var(--text);
+            font-size: 1.1em;
+        }
+
+        .scan-history {
+            margin-top: 30px;
+        }
+
+        .scan-item {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .scan-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .scan-info {
+            flex: 1;
+        }
+
+        .scan-date {
+            color: var(--secondary);
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .scan-result {
+            margin-top: 5px;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .scan-details {
+            margin-top: 8px;
+            display: flex;
+            gap: 20px;
+            font-size: 0.9em;
+            color: var(--secondary);
+        }
+
+        .scan-type, .scan-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .scan-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .no-scans {
+            text-align: center;
+            padding: 40px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .no-scans i {
+            color: var(--secondary);
+            margin-bottom: 15px;
+        }
+
+        .no-scans p {
+            color: var(--secondary);
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 8px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+        }
+
+        .btn-primary:hover {
+            background: var(--secondary);
+        }
+
+        .btn-accent {
+            background: var(--accent);
+        }
+
+        .btn-accent:hover {
+            background: #ff5252;
+        }
+
+        .settings-form {
+            max-width: 600px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--secondary);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1em;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .btn-save {
+            background: var(--accent);
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-save:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .scan-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .scan-details {
+                flex-direction: column;
+                gap: 5px;
+                align-items: center;
+            }
+
+            .scan-actions {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="container navbar-content">
+            <a href="{{ url_for('home') }}" class="logo">
+                <i class="fas fa-brain"></i>
+                BrainScan AI
+            </a>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('technology') }}" {% if request.endpoint == 'technology' %}class="active"{% endif %}><i class="fas fa-microchip"></i> Technology</a></li>
+                <li><a href="{{ url_for('research') }}" {% if request.endpoint == 'research' %}class="active"{% endif %}><i class="fas fa-flask"></i> Research</a></li>
+                <li><a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}class="active"{% endif %}><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#contact" {% if request.endpoint == 'contact' %}class="active"{% endif %}><i class="fas fa-envelope"></i> Contact</a></li>
+                
+                {% if current_user.is_authenticated %}
+                    <li class="dropdown">
+                        <a href="#tools" {% if request.endpoint in ['predict', 'analysis', 'visualization', 'report'] %}class="active"{% endif %}><i class="fas fa-tools"></i> Tools</a>
+                        <div class="dropdown-content">
+                            <a href="{{ url_for('predict') }}" {% if request.endpoint == 'predict' %}class="active"{% endif %}><i class="fas fa-upload"></i> MRI Upload</a>
+                            <a href="#analysis" {% if request.endpoint == 'analysis' %}class="active"{% endif %}><i class="fas fa-chart-bar"></i> Analysis</a>
+                            <a href="#visualization" {% if request.endpoint == 'visualization' %}class="active"{% endif %}><i class="fas fa-image"></i> Visualization</a>
+                            <a href="#report" {% if request.endpoint == 'report' %}class="active"{% endif %}><i class="fas fa-file-medical"></i> Generate Report</a>
+                        </div>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('predict') }}" class="predict-btn {% if request.endpoint == 'predict' %}active{% endif %}">
+                            <i class="fas fa-robot"></i> Predict
+                        </a>
+                    </li>
+                    <li class="profile-dropdown">
+                        <a href="#profile" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
+                            <i class="fas fa-user-circle"></i>
+                            {{ current_user.fullname }}
+                        </a>
+                        <div class="profile-dropdown-content">
+                            <div class="profile-info">
+                                <i class="fas fa-user-circle fa-2x"></i>
+                                <div class="user-details">
+                                    <div class="user-name">{{ current_user.fullname }}</div>
+                                    <div class="user-email">{{ current_user.email }}</div>
+                                </div>
+                            </div>
+                            <a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
+                                <i class="fas fa-user"></i> My Profile
+                            </a>
+                            <a href="#scan-history" class="scan-history-link {% if request.endpoint == 'scan_history' %}active{% endif %}">
+                                <i class="fas fa-history"></i> My Scans
+                            </a>
+                            <a href="{{ url_for('logout') }}" {% if request.endpoint == 'logout' %}class="active"{% endif %}>
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </a>
+                        </div>
+                    </li>
+                {% else %}
+                    <li>
+                        <a href="{{ url_for('signin') }}" class="predict-btn {% if request.endpoint == 'signin' %}active{% endif %}">
+                            <i class="fas fa-robot"></i> Try Predict
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ url_for('signin') }}" class="signin-btn {% if request.endpoint == 'signin' %}active{% endif %}">
+                            <i class="fas fa-sign-in-alt"></i> Sign In
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="profile-container">
+            <div class="profile-header">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <h1 class="profile-name">{{ current_user.fullname }}</h1>
+                <p class="profile-email">{{ current_user.email }}</p>
+            </div>
+
+            <div class="profile-content">
+                <div class="profile-sidebar">
+                    <ul class="profile-menu">
+                        <li><a href="#personal-info" class="active"><i class="fas fa-user"></i> Personal Info</a></li>
+                        <li><a href="#scan-history"><i class="fas fa-history"></i> Scan History</a></li>
+                        <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                        <li><a href="#notifications"><i class="fas fa-bell"></i> Notifications</a></li>
+                        <li><a href="#security"><i class="fas fa-shield-alt"></i> Security</a></li>
+                    </ul>
+                </div>
+
+                <div class="profile-main">
+                    <!-- Personal Information Section -->
+                    <div id="personal-info">
+                        <h2 class="section-title">Personal Information</h2>
+                        <div class="info-group">
+                            <div class="info-label">Full Name</div>
+                            <div class="info-value">{{ current_user.fullname }}</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Email</div>
+                            <div class="info-value">{{ current_user.email }}</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Account Type</div>
+                            <div class="info-value">Premium User</div>
+                        </div>
+                        <div class="info-group">
+                            <div class="info-label">Member Since</div>
+                            <div class="info-value">{{ current_user.created_at.strftime('%B %Y') }}</div>
+                        </div>
+                    </div>
+
+                    <!-- Scan History Section -->
+                    <div id="scan-history" style="display: none;">
+                        <h2 class="section-title">Scan History</h2>
+                        <div class="scan-history">
+                            {% if scan_history %}
+                                {% for scan in scan_history %}
+                                <div class="scan-item">
+                                    <div class="scan-info">
+                                        <div class="scan-date">{{ scan.date.strftime('%B %d, %Y') }}</div>
+                                        <div class="scan-result">{{ scan.result }}</div>
+                                        <div class="scan-details">
+                                            <span class="scan-type">MRI Type: {{ scan.mri_type }}</span>
+                                            <span class="scan-status">Status: {{ scan.status }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="scan-actions">
+                                        <a href="{{ url_for('report', report_id=scan.id) }}" class="btn btn-primary">
+                                            <i class="fas fa-eye"></i> View Report
+                                        </a>
+                                        <a href="{{ url_for('download_report', report_id=scan.id) }}" class="btn btn-accent">
+                                            <i class="fas fa-download"></i> Download
+                                        </a>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <div class="no-scans">
+                                    <i class="fas fa-history fa-3x"></i>
+                                    <p>No scan history available yet.</p>
+                                    <a href="{{ url_for('predict') }}" class="btn btn-primary">
+                                        <i class="fas fa-upload"></i> Upload New MRI
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Settings Section -->
+                    <div id="settings" style="display: none;">
+                        <h2 class="section-title">Account Settings</h2>
+                        <form class="settings-form">
+                            <div class="form-group">
+                                <label class="form-label">Full Name</label>
+                                <input type="text" class="form-input" value="{{ current_user.fullname }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="email" class="form-input" value="{{ current_user.email }}">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-input" placeholder="Add phone number">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Language Preference</label>
+                                <select class="form-input">
+                                    <option>English</option>
+                                    <option>Spanish</option>
+                                    <option>French</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-save">
+                                <i class="fas fa-save"></i> Save Changes
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener("scroll", function () {
+            const navbar = document.querySelector(".navbar");
+            if (window.scrollY > 50) {
+                navbar.classList.add("scrolled");
+            } else {
+                navbar.classList.remove("scrolled");
+            }
+        });
+
+        // Profile menu navigation
+        document.querySelectorAll('.profile-menu a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all links
+                document.querySelectorAll('.profile-menu a').forEach(l => l.classList.remove('active'));
+                // Add active class to clicked link
+                this.classList.add('active');
+
+                // Hide all sections
+                document.querySelectorAll('.profile-main > div').forEach(section => {
+                    section.style.display = 'none';
+                });
+
+                // Show selected section
+                const targetId = this.getAttribute('href').substring(1);
+                document.getElementById(targetId).style.display = 'block';
+            });
+        });
+
+        // Handle scan history link in profile dropdown
+        document.querySelector('.scan-history-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Hide all sections
+            document.querySelectorAll('.profile-main > div').forEach(section => {
+                section.style.display = 'none';
+            });
+
+            // Show scan history section
+            document.getElementById('scan-history').style.display = 'block';
+
+            // Update active state in profile menu
+            document.querySelectorAll('.profile-menu a').forEach(l => l.classList.remove('active'));
+            document.querySelector('.profile-menu a[href="#scan-history"]').classList.add('active');
+
+            // Close profile dropdown
+            document.querySelector('.profile-dropdown-content').style.display = 'none';
+        });
+    </script>
+</body>
+</html> 
