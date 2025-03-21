@@ -76,8 +76,76 @@
             gap: 10px;
         }
 
-        .logo i {
-            color: var(--accent);
+        .logo-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 21, 79, 0.1);
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-text::after {
+            transform: scaleX(1);
+        }
+
+        .logo-icon {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 21, 79, 0.2);
+        }
+
+        .logo-icon i {
+            position: absolute;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon .fa-brain {
+            transform: scale(1.2);
+            opacity: 0.9;
+        }
+
+        .logo-icon .fa-microchip {
+            transform: scale(0.8);
+            opacity: 0.7;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(360deg);
+            transition: transform 0.5s ease;
+        }
+
+        .logo:hover .logo-icon .fa-brain {
+            transform: scale(1.3);
+            opacity: 1;
+        }
+
+        .logo:hover .logo-icon .fa-microchip {
+            transform: scale(0.9);
+            opacity: 0.8;
         }
 
         .nav-links {
@@ -98,19 +166,56 @@
             gap: 5px;
         }
 
+        .nav-links a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
+        }
+
         .nav-links a::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
-            width: 0;
+            width: 100%;
             height: 2px;
             background-color: var(--accent);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .nav-links a:not(.predict-btn):not(.signin-btn):hover::after {
-            width: 100%;
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu-btn.active i {
+            transform: rotate(90deg);
         }
 
         /* Predict button */
@@ -123,9 +228,24 @@
         }
 
         .predict-btn:hover {
-            background-color: #ff5252;
+            background-color: #ff3333;
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .predict-btn.active {
+            background-color: #ff5252;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+        }
+
+        .predict-btn.active:hover {
+            background-color: #ff1a1a;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 107, 107, 0.4);
+        }
+
+        .predict-btn.active::after {
+            display: none;
         }
 
         /* Sign in button */
@@ -400,29 +520,6 @@
             margin-right: 10px;
         }
 
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .navbar {
-                padding: 1rem;
-            }
-
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .upload-container {
-                margin: 20px;
-                padding: 20px;
-            }
-
-            .upload-area {
-                padding: 20px;
-            }
-        }
-
         /* Profile Dropdown Styles */
         .profile-dropdown {
             position: relative;
@@ -512,6 +609,146 @@
             font-size: 0.9em;
             color: var(--secondary);
         }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .container {
+                max-width: 95%;
+                padding: 0 15px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .nav-links {
+                gap: 20px;
+            }
+
+            .upload-container {
+                padding: 30px;
+            }
+
+            .upload-header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar-content {
+                padding: 0 15px;
+            }
+
+            .nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                right: 0;
+                background: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                padding: 10px 0;
+                display: block;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .upload-section {
+                margin-top: 80px;
+                padding: 30px 0;
+            }
+
+            .upload-container {
+                padding: 20px;
+                margin: 0 15px;
+            }
+
+            .upload-area {
+                padding: 20px;
+            }
+
+            .upload-area i {
+                font-size: 36px;
+            }
+
+            .upload-area h3 {
+                font-size: 1.2rem;
+            }
+
+            .file-actions {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .analyze-btn, .delete-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .dropdown-content, .profile-dropdown-content {
+                position: static;
+                box-shadow: none;
+                margin-top: 0;
+                padding-left: 20px;
+            }
+
+            .dropdown-content::before, .profile-dropdown-content::before {
+                display: none;
+            }
+
+            .profile-dropdown-content {
+                position: static;
+                right: auto;
+            }
+
+            .profile-info {
+                padding: 10px 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .logo {
+                font-size: 1.3rem;
+            }
+
+            .upload-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .upload-header p {
+                font-size: 1rem;
+            }
+
+            .requirements {
+                padding: 15px;
+            }
+
+            .requirements h3 {
+                font-size: 1.2rem;
+            }
+
+            .requirements li {
+                font-size: 0.9rem;
+            }
+
+            .sub-requirement {
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -519,33 +756,39 @@
     <nav class="navbar">
         <div class="container navbar-content">
             <a href="{{ url_for('home') }}" class="logo">
-                <i class="fas fa-brain"></i>
-                BrainScan AI
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <span class="logo-text">NeuroVeda</span>
             </a>
+            <div class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </div>
             <ul class="nav-links">
-                <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
-                <li><a href="{{ url_for('technology') }}"><i class="fas fa-microchip"></i> Technology</a></li>
-                <li><a href="{{ url_for('research') }}"><i class="fas fa-flask"></i> Research</a></li>
-                <li><a href="{{ url_for('about') }}"><i class="fas fa-info-circle"></i> About</a></li>
-                <li><a href="#contact"><i class="fas fa-envelope"></i> Contact</a></li>
+                <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="{{ url_for('technology') }}" {% if request.endpoint == 'technology' %}class="active"{% endif %}><i class="fas fa-microchip"></i> Technology</a></li>
+                <li><a href="{{ url_for('research') }}" {% if request.endpoint == 'research' %}class="active"{% endif %}><i class="fas fa-flask"></i> Research</a></li>
+                <li><a href="{{ url_for('about') }}" {% if request.endpoint == 'about' %}class="active"{% endif %}><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#contact" {% if request.endpoint == 'contact' %}class="active"{% endif %}><i class="fas fa-envelope"></i> Contact</a></li>
                 
                 {% if current_user.is_authenticated %}
                     <li class="dropdown">
-                        <a href="#tools"><i class="fas fa-tools"></i> Tools</a>
+                        <a href="#tools" {% if request.endpoint in ['predict', 'analysis', 'visualization', 'report'] %}class="active"{% endif %}><i class="fas fa-tools"></i> Tools</a>
                         <div class="dropdown-content">
-                            <a href="{{ url_for('predict') }}"><i class="fas fa-upload"></i> MRI Upload</a>
-                            <a href="#analysis"><i class="fas fa-chart-bar"></i> Analysis</a>
-                            <a href="#visualization"><i class="fas fa-image"></i> Visualization</a>
-                            <a href="#report"><i class="fas fa-file-medical"></i> Generate Report</a>
+                            <a href="{{ url_for('predict') }}" {% if request.endpoint == 'predict' %}class="active"{% endif %}><i class="fas fa-upload"></i> MRI Upload</a>
+                            <a href="#analysis" {% if request.endpoint == 'analysis' %}class="active"{% endif %}><i class="fas fa-chart-bar"></i> Analysis</a>
+                            <a href="#visualization" {% if request.endpoint == 'visualization' %}class="active"{% endif %}><i class="fas fa-image"></i> Visualization</a>
+                            <a href="#report" {% if request.endpoint == 'report' %}class="active"{% endif %}><i class="fas fa-file-medical"></i> Generate Report</a>
                         </div>
                     </li>
                     <li>
-                        <a href="{{ url_for('predict') }}" class="predict-btn">
+                        <a href="{{ url_for('predict') }}" class="predict-btn {% if request.endpoint == 'predict' %}active{% endif %}">
                             <i class="fas fa-robot"></i> Predict
                         </a>
                     </li>
                     <li class="profile-dropdown">
-                        <a href="#profile">
+                        <a href="#profile" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
                             <i class="fas fa-user-circle"></i>
                             {{ current_user.fullname }}
                         </a>
@@ -557,25 +800,25 @@
                                     <div class="user-email">{{ current_user.email }}</div>
                                 </div>
                             </div>
-                            <a href="{{ url_for('profile') }}">
+                            <a href="{{ url_for('profile') }}" {% if request.endpoint == 'profile' %}class="active"{% endif %}>
                                 <i class="fas fa-user"></i> My Profile
                             </a>
-                            <a href="{{ url_for('predict') }}">
+                            <a href="#scan-history" class="scan-history-link {% if request.endpoint == 'scan_history' %}active{% endif %}">
                                 <i class="fas fa-history"></i> My Scans
                             </a>
-                            <a href="{{ url_for('logout') }}">
+                            <a href="{{ url_for('logout') }}" {% if request.endpoint == 'logout' %}class="active"{% endif %}>
                                 <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                         </div>
                     </li>
                 {% else %}
                     <li>
-                        <a href="{{ url_for('signin') }}" class="predict-btn">
+                        <a href="{{ url_for('signin') }}" class="predict-btn {% if request.endpoint == 'signin' %}active{% endif %}">
                             <i class="fas fa-robot"></i> Try Predict
                         </a>
                     </li>
                     <li>
-                        <a href="{{ url_for('signin') }}" class="signin-btn">
+                        <a href="{{ url_for('signin') }}" class="signin-btn {% if request.endpoint == 'signin' %}active{% endif %}">
                             <i class="fas fa-sign-in-alt"></i> Sign In
                         </a>
                     </li>
@@ -794,6 +1037,52 @@
                 navbar.classList.remove("scrolled");
             }
         });
+
+        // Mobile Menu Toggle with animation
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+        const menuItems = navLinks.querySelectorAll('li');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+            
+            if (navLinks.classList.contains('active')) {
+                // Add staggered animation to menu items
+                menuItems.forEach((item, index) => {
+                    item.style.transitionDelay = `${index * 0.1}s`;
+                });
+            } else {
+                // Reset transition delays when closing
+                menuItems.forEach(item => {
+                    item.style.transitionDelay = '0s';
+                });
+            }
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                // Reset transition delays
+                menuItems.forEach(item => {
+                    item.style.transitionDelay = '0s';
+                });
+            }
+        });
+
+        // Close mobile menu when clicking a link
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
+                // Reset transition delays
+                menuItems.forEach(item => {
+                    item.style.transitionDelay = '0s';
+                });
+            });
+        });
     </script>
 </body>
-</html> 
+</html>

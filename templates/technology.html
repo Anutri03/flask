@@ -71,8 +71,76 @@
             gap: 10px;
         }
 
-        .logo i {
-            color: var(--accent);
+        .logo-text {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            position: relative;
+            text-shadow: 2px 2px 4px rgba(0, 21, 79, 0.1);
+        }
+
+        .logo-text::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .logo:hover .logo-text::after {
+            transform: scaleX(1);
+        }
+
+        .logo-icon {
+            position: relative;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0, 21, 79, 0.2);
+        }
+
+        .logo-icon i {
+            position: absolute;
+            font-size: 1.2rem;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .logo-icon .fa-brain {
+            transform: scale(1.2);
+            opacity: 0.9;
+        }
+
+        .logo-icon .fa-microchip {
+            transform: scale(0.8);
+            opacity: 0.7;
+        }
+
+        .logo:hover .logo-icon {
+            transform: rotate(360deg);
+            transition: transform 0.5s ease;
+        }
+
+        .logo:hover .logo-icon .fa-brain {
+            transform: scale(1.3);
+            opacity: 1;
+        }
+
+        .logo:hover .logo-icon .fa-microchip {
+            transform: scale(0.9);
+            opacity: 0.8;
         }
 
         .nav-links {
@@ -93,19 +161,55 @@
             gap: 5px;
         }
 
+        .nav-links a.active {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--accent);
+            transform: scaleX(1);
+            transition: transform 0.3s ease;
+        }
+
         .nav-links a::after {
             content: '';
             position: absolute;
             bottom: -5px;
             left: 0;
-            width: 0;
+            width: 100%;
             height: 2px;
             background-color: var(--accent);
-            transition: width 0.3s ease;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .nav-links a:not(.predict-btn):not(.signin-btn):hover::after {
-            width: 100%;
+        .nav-links a:hover::after {
+            transform: scaleX(1);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        .mobile-menu-btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .mobile-menu-btn.active i {
+            transform: rotate(90deg);
         }
 
         /* Predict button */
@@ -330,20 +434,112 @@
         }
 
         @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
             .nav-links {
+                display: none;
+                position: fixed;
+                top: 70px;
+                left: 0;
+                width: 100%;
+                background-color: white;
+                padding: 20px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                padding: 10px;
+                display: block;
+            }
+
+            .dropdown-content {
+                position: static;
+                box-shadow: none;
+                margin-top: 0;
+                padding-left: 20px;
+            }
+
+            .dropdown-content::before {
                 display: none;
             }
 
-            .navbar {
-                padding: 1rem;
+            .profile-dropdown-content {
+                position: static;
+                box-shadow: none;
+                margin-top: 0;
             }
 
-            .logo {
-                font-size: 1.5rem;
+            .profile-dropdown-content::before {
+                display: none;
             }
 
             .tech-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .tech-section {
+                margin-top: 100px;
+            }
+
+            .tech-container {
+                padding: 20px;
+            }
+
+            .tech-header h1 {
+                font-size: 2rem;
+            }
+
+            .tech-header p {
+                font-size: 1rem;
+            }
+
+            .tech-card {
+                padding: 20px;
+            }
+
+            .tech-list {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tech-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .tech-card h3 {
+                font-size: 1.2rem;
+            }
+
+            .tech-card p {
+                font-size: 0.9rem;
+            }
+
+            .tech-item {
+                padding: 10px;
+            }
+
+            .tech-item img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .tech-item span {
+                font-size: 0.9rem;
             }
         }
 
@@ -436,15 +632,22 @@
             font-size: 0.9em;
             color: var(--secondary);
         }
+        
     </style>
 </head>
 <body>
     <nav class="navbar">
         <div class="container navbar-content">
             <a href="{{ url_for('home') }}" class="logo">
-                <i class="fas fa-brain"></i>
-                BrainScan AI
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                    <i class="fas fa-microchip"></i>
+                </div>
+                <span class="logo-text">NeuroVeda</span>
             </a>
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
             <ul class="nav-links">
                 <li><a href="{{ url_for('home') }}" {% if request.endpoint == 'home' %}class="active"{% endif %}><i class="fas fa-home"></i> Home</a></li>
                 <li><a href="{{ url_for('technology') }}" {% if request.endpoint == 'technology' %}class="active"{% endif %}><i class="fas fa-microchip"></i> Technology</a></li>
@@ -585,6 +788,23 @@
                 navbar.classList.add("scrolled");
             } else {
                 navbar.classList.remove("scrolled");
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const navLinks = document.querySelector('.nav-links');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            mobileMenuBtn.classList.toggle('active');
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!navLinks.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navLinks.classList.remove('active');
+                mobileMenuBtn.classList.remove('active');
             }
         });
     </script>
