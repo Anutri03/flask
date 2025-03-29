@@ -16,7 +16,7 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
-# Configuration#
+# Configuration
 app.config['SECRET_KEY'] = os.urandom(24)  # Generate a secure random key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
